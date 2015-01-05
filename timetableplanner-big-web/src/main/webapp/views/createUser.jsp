@@ -69,10 +69,12 @@
      $("#submitButton").click(function(){
          var new1 = $("#password").val();
          var new2 = $("#retypePassword").val();
+         var passwordRegularSpecial = /(^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9-?#!_]{3,}$)/;
+         var passwordRegularWithSpecial = /(^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[-?#!_])[a-zA-Z0-9-?#!_]{3,}$)/;
            if( new1 === new2 ){
              if(new1.length > 0 && new2.length > 0){
                  if (new1.length > 7){
-                   if (new1.match(/(^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[-?#!_])[a-zA-Z0-9-?#!_]{3,}$)/)){
+                   if (new1.match(passwordRegularSpecial)){
                      $("#form").submit();
                    }
                    else{

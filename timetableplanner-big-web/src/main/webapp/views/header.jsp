@@ -18,9 +18,9 @@
 	          <li class="dropdown">
 	            <a href="#" id="drop" role="button" class="dropdown-toggle" data-toggle="dropdown">Admin page <span class="caret"></span></a>
 	            <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/createuser">Create users</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/createuser">Create user</a></li>
 	                <li role="presentation" class="divider"></li>
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">List Authors</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">List users</a></li>
 	            </ul>
 	          </li>
 	        </sec:authorize>
@@ -28,7 +28,7 @@
 	        	<li><a href="${pageContext.request.contextPath}/login">Login<br></a></li>
 	        </sec:authorize>
 	
-	        <sec:authorize ifAnyGranted="ROLE_USER">
+	        <sec:authorize access="isAuthenticated()">
 	        	<li><a href="<c:url value="${pageContext.request.contextPath}/j_spring_security_logout" />">Logout<br></a></li>
 	        </sec:authorize>
 	      </ul>

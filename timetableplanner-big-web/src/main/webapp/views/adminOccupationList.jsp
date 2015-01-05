@@ -24,32 +24,20 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Authority</th>
+                            <th>Occupation Name</th>
+                            <th>Date</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${page.content}" var="user" varStatus="status">
+                    <c:forEach items="${page.content}" var="occupation" varStatus="status">
                         <tr>
                             <td>${(page.pageSize * (page.currentIndex-1)) + status.count}</td>
-                            <td>${user.userName}</td>
-                            <td>${user.emailAdress}</td>
-                            
-                            <c:set var="authority" value="User"></c:set>
-                            <c:forEach items="${user.authorities}" var="role">
-                            	<c:if test="${role.authority  == 'ROLE_ADMIN'}">
-                            		<c:set var="authority" value="Admin"></c:set>
-                            	</c:if>
-                            </c:forEach>
-                            <c:if test="${empty user.authorities}">
-                            	<c:set var="authority" value=""></c:set>
-                            </c:if>
-                            <td>${authority}</td>
+                            <td>${occupation.name}</td>
+                            <td>${occupation.dateTime}</td>
                             <td class="table-buttons">
-                              <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editUser/${user.id}">Edit</a>
-                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteUser/${user.id}">Delete</a>
+                              <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editUser/${occupation.id}">Edit</a>
+                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteUser/${occupation.id}">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>

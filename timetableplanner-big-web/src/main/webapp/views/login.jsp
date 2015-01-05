@@ -18,30 +18,34 @@
 		 	<div class="row-fluid"><div class="col-md-12"><hr></div></div> 
 		
 			 <h1 align="center"> Please login! </h1>
-			 	<form method="POST" id="form"  action="<c:url value='j_spring_security_check' />">
+			 	<form method="POST" id="loginForm"  action="<c:url value='j_spring_security_check' />">
 			 	
 			 		<div class="col-sm-4 col-sm-offset-4">
 					 	<c:if test="${not empty param.err}">
+			                <div class="alert alert-danger">
+			                	Sorry, your username and password are incorrect - <strong>please try again.</strong>
+			                </div>
 			                <div><c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/></div>
 			            </c:if>
 			            <c:if test="${not empty param.out}">
-			                <div>You've logged out successfully.</div>
+			                <div class="alert alert-info"><strong>You are now logged out.</strong></div>
 			            </c:if>
 			            <c:if test="${not empty param.time}">
-			                <div>You've been logged out due to inactivity.</div>
+			                <div class="alert alert-warning"><strong>You've been logged out due to inactivity.</strong></div>
 			            </c:if>
 		            </div>
+
 					<div class="col-sm-4 col-sm-offset-4">
-					 	<label for="username">Email</label>		 			 		
+					 	<label for="username">Email</label>
 					 	<div class="input-group">
 					 		<span class="input-group-addon">@</span>
-					 		<input id="j_username" name="j_username" class="form-control" type="email" placeholder="Email"/>		 			
+					 		<input id="username" name="j_username" class="form-control" type="email" placeholder="Email"/>
 					 	</div>
 				 	</div>
 				 	<div class="col-sm-4 col-sm-offset-4">
-					 	<label for="j_password">Password</label>
+					 	<label for="password">Password</label>
 					 	<div class="form-group">
-					 		<input id="j_password" name="j_password" class="form-control" type="password" placeholder="Password"/>
+					 		<input id="password" name="j_password" class="form-control" type="password" placeholder="Password"/>
 					 	</div>
 				 	</div>
 				 	<div class="col-sm-4 col-sm-offset-4">
@@ -52,11 +56,5 @@
 			 	</form>
 			</div>
 		 </div>
-	 <script type="text/javascript">
-	 	$(document).ready(function(){
-	  		$("#form").submit
-	  	});
-	 </script>
-	 
 	</body>
 </html>

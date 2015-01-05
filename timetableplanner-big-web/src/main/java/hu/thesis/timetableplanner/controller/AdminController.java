@@ -4,10 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import hu.thesis.timetableplanner.dto.AuthorityDto;
+import hu.thesis.timetableplanner.dto.LecturerDto;
+import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.dto.UserDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;
 import hu.thesis.timetableplanner.form.EditUserForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
+import hu.thesis.timetableplanner.service.LecturerService;
+import hu.thesis.timetableplanner.service.OccupationService;
 import hu.thesis.timetableplanner.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +27,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class AdminController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private OccupationService occupationService;
+
+	@Autowired
+	private LecturerService lecturerService;
 
 	@InitBinder
     public void initBinder(WebDataBinder binder){
@@ -64,7 +76,7 @@ public class AdminController {
 			}
 		}
 		redirectAttributes.addFlashAttribute("errorMessage",
-				"There is some error");
+				"There is some error" + result.toString());
 		return "redirect:/admin/createuser";
 
 	}	
@@ -123,13 +135,49 @@ public class AdminController {
 //			}
 		}
 		redirectAttribute.addFlashAttribute("errorMessage", "An error  occured: " + result.toString());
-		return "redirect:/admin/editAuthor/" + id;
+		return "redirect:/admin/editUser/" + id;
 	}
 
 	@RequestMapping(value = "/admin/deleteUser/{id}", method = RequestMethod.GET)
 	public String deleteUser(@PathVariable("id") long id) {
 		userService.deleteUser(id);
 		return "redirect:/admin/users/1";
+	}
+
+	@RequestMapping(value = "/admin/lecturers/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView listLecturers(@PathVariable("pageNumber") int pageNumber,
+									  HttpServletRequest request) {
+		ModelAndView model = new ModelAndView("adminLecturerList");
+
+		Pagination<LecturerDto> page = lecturerService.findAllLecturerPageable(pageNumber);
+		page.setPageName("/admin/lecturers");
+		model.addObject("page", page);
+
+		return model;
+	}
+
+	@RequestMapping(value = "/admin/lecturerOccupation/{id}",method = RequestMethod.GET)
+	public ModelAndView listLecturerOccupation(@PathVariable("id") long id, HttpServletRequest request) {
+
+		ModelAndView model = new ModelAndView("adminLecturerOccupation");
+
+		LecturerDto lecturer = lecturerService.findById(id);
+		List<OccupationDto> occupations = lecturer.getOccupations();
+		model.addObject("occupations", occupations);
+
+		return model;
+	}
+
+	@RequestMapping(value = "/admin/occupations/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView listOccupations(@PathVariable("pageNumber") int pageNumber,
+									  HttpServletRequest request) {
+		ModelAndView model = new ModelAndView("adminOccupationList");
+
+		Pagination<OccupationDto> page = occupationService.findAllOccupationPageable(pageNumber);
+		page.setPageName("/admin/occupations");
+		model.addObject("page", page);
+
+		return model;
 	}
 
 }

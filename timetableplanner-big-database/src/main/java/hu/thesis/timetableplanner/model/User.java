@@ -1,35 +1,25 @@
 package hu.thesis.timetableplanner.model;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name="user")
-public class User extends BaseEntity{
-	
+@Table(name = "user")
+public class User extends BaseEntity {
+
 	private String userName;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String emailAdress;
-	
+
 	private String password;
-	
+
 	private Boolean enabled;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinTable(name="user_authorities")
-    private List<Authority> authorities;	
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //ALL?
+	@JoinTable(name = "user_authorities")
+	private List<Authority> authorities;
 
 	public String getUserName() {
 		return userName;
@@ -62,7 +52,6 @@ public class User extends BaseEntity{
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
-	
 
 	public Boolean getEnabled() {
 		return enabled;

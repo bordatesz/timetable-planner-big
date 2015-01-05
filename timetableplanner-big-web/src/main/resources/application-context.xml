@@ -25,20 +25,27 @@
   		<mvc:mapping path="/**"/>
   		<bean class="hu.thesis.timetableplanner.interceptor.CacheInterceptor">
   		</bean>
+        <!-- <bean id="webContentInterceptor"
+              class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0" />
+            <property name="useExpiresHeader" value="true" />
+            <property name="useCacheControlHeader" value="true" />
+            <property name="useCacheControlNoStore" value="true" />
+        </bean> -->
   	</mvc:interceptor>
   </mvc:interceptors>
-  
-  <import resource="classpath:/spring/jpa-context.xml" />  
-  
+
+  <import resource="classpath:/spring/jpa-context.xml" />
+
   <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
     <property name="jndiName" value="java:comp/env/jdbc/timetableplanner_big" />
   </bean>
-  
+
   <!-- For Messages from properties file(messages.properties)    -->
   <bean id="messageSource"
     class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="messages" />
   </bean>
 
- 
+
 </beans>

@@ -154,6 +154,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.getOne(id);
 		user.getAuthorities().clear();
 		userRepository.save(user);
+		userRepository.delete(user); // FIX THIS
 	}
 
 
