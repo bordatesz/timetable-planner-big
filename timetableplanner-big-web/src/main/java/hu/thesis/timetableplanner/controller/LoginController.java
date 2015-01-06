@@ -17,8 +17,6 @@ public class LoginController {
 		ModelAndView loginModel = new ModelAndView("login");
 		ModelAndView homeModel = new ModelAndView("redirect:/");
 
-		//User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 		if(principal != null){
 			return homeModel;
 		}

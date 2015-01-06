@@ -24,6 +24,8 @@ public class EditUserForm {
 
 	private boolean admin;
 
+	private boolean lecturer;
+
 	public String getUserName() {
 		return userName;
 	}
@@ -68,6 +70,12 @@ public class EditUserForm {
 		return REGEXP_PASSWORD;
 	}
 
-	
 
+	public boolean isLecturer() {
+		return lecturer;
+	}
+
+	public void setLecturer(boolean lecturer) {
+		this.lecturer = lecturer;
+	}
 }

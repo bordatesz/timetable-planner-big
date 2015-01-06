@@ -4,13 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import hu.thesis.timetableplanner.dto.AuthorityDto;
-import hu.thesis.timetableplanner.dto.LecturerDto;
-import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.dto.UserDto;
+import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;
 import hu.thesis.timetableplanner.form.EditUserForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
-import hu.thesis.timetableplanner.service.LecturerService;
 import hu.thesis.timetableplanner.service.OccupationService;
 import hu.thesis.timetableplanner.service.UserService;
 
@@ -37,9 +35,6 @@ public class AdminController {
 
 	@Autowired
 	private OccupationService occupationService;
-
-	@Autowired
-	private LecturerService lecturerService;
 
 	@InitBinder
     public void initBinder(WebDataBinder binder){
@@ -105,7 +100,9 @@ public class AdminController {
 		for (AuthorityDto authority : user.getAuthorities()) {
             if(authority.getAuthority().equals("ROLE_ADMIN")){
                 editUser.setAdmin(true);
-            }
+            } else if(authority.getAuthority().equals("ROLE_LECTURER")){
+				editUser.setLecturer(true);
+			}
         }
 		
 		model.addObject("user", user);
@@ -126,7 +123,7 @@ public class AdminController {
 //				return "redirect:/admin/editAuthor/" + id;
 //			}else {
 				if(form.getNewPassword() != null){
-					userService.editUser(id, form);
+					userService.editUser(id, form, form.getNewPassword());
 					return "redirect:/admin/users/1";
 				}else{
 					userService.editUser(id, form);
@@ -142,42 +139,6 @@ public class AdminController {
 	public String deleteUser(@PathVariable("id") long id) {
 		userService.deleteUser(id);
 		return "redirect:/admin/users/1";
-	}
-
-	@RequestMapping(value = "/admin/lecturers/{pageNumber}", method = RequestMethod.GET)
-	public ModelAndView listLecturers(@PathVariable("pageNumber") int pageNumber,
-									  HttpServletRequest request) {
-		ModelAndView model = new ModelAndView("adminLecturerList");
-
-		Pagination<LecturerDto> page = lecturerService.findAllLecturerPageable(pageNumber);
-		page.setPageName("/admin/lecturers");
-		model.addObject("page", page);
-
-		return model;
-	}
-
-	@RequestMapping(value = "/admin/lecturerOccupation/{id}",method = RequestMethod.GET)
-	public ModelAndView listLecturerOccupation(@PathVariable("id") long id, HttpServletRequest request) {
-
-		ModelAndView model = new ModelAndView("adminLecturerOccupation");
-
-		LecturerDto lecturer = lecturerService.findById(id);
-		List<OccupationDto> occupations = lecturer.getOccupations();
-		model.addObject("occupations", occupations);
-
-		return model;
-	}
-
-	@RequestMapping(value = "/admin/occupations/{pageNumber}", method = RequestMethod.GET)
-	public ModelAndView listOccupations(@PathVariable("pageNumber") int pageNumber,
-									  HttpServletRequest request) {
-		ModelAndView model = new ModelAndView("adminOccupationList");
-
-		Pagination<OccupationDto> page = occupationService.findAllOccupationPageable(pageNumber);
-		page.setPageName("/admin/occupations");
-		model.addObject("page", page);
-
-		return model;
 	}
 
 }

@@ -14,6 +14,7 @@
 	<body>
 		<jsp:include page="header.jsp"/>
     <div class="container">
+        <a class="btn btn-info" href="${pageContext.request.contextPath}/addUserOccupation">Edit</a>
         <div class="row"><div class="col-md-12"><hr></div></div>
         <div class="row"><div class="col-md-12"><hr></div></div>
 
@@ -30,14 +31,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${occupations}" var="occupation" varStatus="status">
+                    <c:forEach items="${page.content}" var="occupation" varStatus="status">
                         <tr>
                             <td>${(page.pageSize * (page.currentIndex-1)) + status.count}</td>
                             <td>${occupation.name}</td>
                             <td>${occupation.dateTime}</td>
                             <td class="table-buttons">
-                              <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editUser/${occupation.id}">Edit</a>
-                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteUser/${occupation.id}">Delete</a>
+                              <a class="btn btn-info" href="${pageContext.request.contextPath}/editOccupation/${occupation.id}">Edit</a>
+                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/deleteOccupation/${occupation.id}">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>

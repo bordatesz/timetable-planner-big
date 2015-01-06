@@ -19,7 +19,7 @@
 	 <div class="text-left">
 		<div class="row-fluid"><div class="col-md-12"><hr></div></div>
 	 	<div class="row-fluid"><div class="col-md-12"><hr></div></div> 
-	 	<form:form method="POST" id="editUser" commandName="editUser" action="${pageContext.request.contextPath}/admin/editAuthor/${user.id}">
+	 	<form:form method="POST" id="editUser" commandName="editUser" action="${pageContext.request.contextPath}/admin/editUser/${user.id}">
 	 	<p class="text-warning col-sm-4 col-sm-offset-4" id="message">${errorMessage}</p>
 	 	
 		 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
@@ -47,8 +47,12 @@
 			 		<form:input id="retypePassword" path="retypePassword" class="form-control" type="password"/>
 			 	</div>
 		 	</div>
+		 	<div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
+                <div class="col-sm-8 col-sm-offset-2"><form:label path="lecturer" class="control-label"> Lecturer role</form:label></div>
+                <div class="col-sm-offset-6"><label><form:checkbox path="lecturer"/></label></div>
+             </div>
 	          <div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
-	            <div class="col-sm-8 col-sm-offset-2"><form:label path="admin" class="control-label"> Admin role is given </form:label></div>
+	            <div class="col-sm-8 col-sm-offset-2"><form:label path="admin" class="control-label"> Admin role</form:label></div>
 	            <div class="col-sm-offset-6"><label><form:checkbox path="admin"/></label></div>
 	          </div>
 		 	

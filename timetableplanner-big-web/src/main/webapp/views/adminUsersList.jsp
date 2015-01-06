@@ -26,6 +26,7 @@
                             <th>#</th>
                             <th>Full Name</th>
                             <th>Email</th>
+                            <th>Lecturer</th>
                             <th>Authority</th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -36,12 +37,16 @@
                             <td>${(page.pageSize * (page.currentIndex-1)) + status.count}</td>
                             <td>${user.userName}</td>
                             <td>${user.emailAdress}</td>
-                            
-                            <c:set var="authority" value="User"></c:set>
+                            <td>${user.lecturer}</td>
+
+                            <c:set var="authority" value=""></c:set>
                             <c:forEach items="${user.authorities}" var="role">
                             	<c:if test="${role.authority  == 'ROLE_ADMIN'}">
-                            		<c:set var="authority" value="Admin"></c:set>
+                            		<c:set var="authority" value="${authority} Admin"></c:set>
                             	</c:if>
+                            	<c:if test="${role.authority  == 'ROLE_LECTURER'}">
+                                    <c:set var="authority" value="${authority} Lecturer"></c:set>
+                                </c:if>
                             </c:forEach>
                             <c:if test="${empty user.authorities}">
                             	<c:set var="authority" value=""></c:set>

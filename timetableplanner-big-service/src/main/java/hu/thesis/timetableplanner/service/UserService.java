@@ -36,6 +36,15 @@ public interface UserService {
 	 */
 	
 	Pagination<UserDto> findAllUserPageable(int pageNumber);
+
+	/**
+	 * Returns all the created user having author authority
+	 * in a page.
+	 * @param pageNumber
+	 * @return @{link Pagination<UserDto>}
+	 */
+
+	Pagination<UserDto> findAllLecturerPageable(int pageNumber);
 	
 
 	/**

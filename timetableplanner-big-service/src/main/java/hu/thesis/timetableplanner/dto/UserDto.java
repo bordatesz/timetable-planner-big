@@ -4,54 +4,107 @@ import java.util.List;
 
 public class UserDto extends BaseDto {
 
-	private String emailAdress;
-	
-	private String userName;
+    private String emailAdress;
 
-	private String password;
-	
-	private Boolean enabled;
+    private String userName;
 
-	private List<AuthorityDto> authorities;
+    private String password;
 
-	public String getEmailAdress() {
-		return emailAdress;
-	}
+    private Boolean active;
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
-	}
+    private Boolean lecturer;
 
-	public String getUserName() {
-		return userName;
-	}
+    private List<AuthorityDto> authorities;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    private Integer requiredHours;
 
-	public String getPassword() {
-		return password;
-	}
+    private String roomNumber;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
+    private String phoneNumber;
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    private List<OccupationDto> occupations;
 
-	public List<AuthorityDto> getAuthorities() {
-		return authorities;
-	}
+    public String getEmailAdress() {
+        return emailAdress;
+    }
 
-	public void setAuthorities(List<AuthorityDto> authorities) {
-		this.authorities = authorities;
-	}
+    public void setEmailAdress(String emailAdress) {
+        this.emailAdress = emailAdress;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Boolean getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Boolean lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public List<AuthorityDto> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<AuthorityDto> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Integer getRequiredHours() {
+        return requiredHours;
+    }
+
+    public void setRequiredHours(Integer requiredHours) {
+        this.requiredHours = requiredHours;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public List<OccupationDto> getOccupations() {
+        return occupations;
+    }
+
+    public void setOccupations(List<OccupationDto> occupations) {
+        this.occupations = occupations;
+    }
+
+
+
 
 }
