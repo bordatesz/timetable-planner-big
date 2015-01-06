@@ -2,6 +2,7 @@ package hu.thesis.timetableplanner.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -41,20 +42,15 @@ public class UserServiceImpl implements UserService {
 		newUser.setUserName(form.getUserName());
 		newUser.setEmailAdress(form.getEmailAdress());
 		newUser.setPassword(form.getPassword());
-		
 		List<Authority> authorities = new ArrayList<Authority>();
-
 		if (form.isAdmin()) {
 			authorities.add(authorityRepository.findByAuthority("ROLE_ADMIN"));
 		}
-
 		if (form.isLecturer()) {
 			authorities.add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			newUser.setLecturer(form.isLecturer());
+			newUser.setLecturer(true);
 		}
-		
 		newUser.setAuthorities(authorities);
-
 		return userRepository.save(newUser).getId();
 	}
 
@@ -74,27 +70,20 @@ public class UserServiceImpl implements UserService {
 		PageRequest page = new PageRequest(pageNumber - 1, Pagination.PAGE_SIZE, Sort.Direction.ASC, SORT_BY_USER_NAME);
 		Page<User> userPage = userRepository.findAll(page);
 		Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
-		List<UserDto> users = new ArrayList<UserDto>();
-		
-		for (User user : userPage.getContent()) {
-			users.add(mapper.map(user, UserDto.class));
-		}
-		
+		List<UserDto> users = userPage.getContent().stream()
+			.map((user) -> mapper.map(user, UserDto.class))
+			.collect(Collectors.toList());
 		return new Pagination<UserDto>(userPage, users);
 	}
 
 	@Override
 	public Pagination<UserDto> findAllLecturerPageable(int pageNumber) {
-		boolean lecturer = true;
 		PageRequest page = new PageRequest(pageNumber - 1, Pagination.PAGE_SIZE, Sort.Direction.ASC, SORT_BY_USER_NAME);
-		Page<User> userPage = userRepository.findByLecturer(lecturer, page);
+		Page<User> userPage = userRepository.findByLecturer(true, page);
 		Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
-		List<UserDto> users = new ArrayList<UserDto>();
-
-		for (User user : userPage.getContent()) {
-			users.add(mapper.map(user, UserDto.class));
-		}
-
+		List<UserDto> users = userPage.getContent().stream()
+				.map((user) -> mapper.map(user, UserDto.class))
+				.collect(Collectors.toList());
 		return new Pagination<UserDto>(userPage, users);
 	}
 
@@ -112,45 +101,23 @@ public class UserServiceImpl implements UserService {
 		Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
 		return mapper.map(user, UserDto.class);
 	}
-	
-	
 
 	@Transactional
 	@Override
 	public boolean hasRole(long id, String role) {
 		User user = userRepository.findOne(id);
-		for (Authority authority : user.getAuthorities()) {
-			if(authority.getAuthority().equals(role)){
-				return true;
-			}
-		}
-		return false;
+		return user.getAuthorities().stream()
+				.filter((authority) -> authority.getAuthority().equals(role))
+				.findAny()
+				.isPresent();
 	}
 	
 
 	@Transactional
 	@Override
 	public void editUser(long id, EditUserForm form, String password) {	
-		User user = userRepository.findOne(id);
-		user.setUserName(form.getUserName());
+		User user = updateUser(id, form);
 		user.setPassword(password);
-		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
-			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		} else if (user.getAuthorities().isEmpty() && form.isLecturer()){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		}else if(user.getAuthorities().isEmpty() && form.isLecturer() && form.isAdmin()){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		}
 		userRepository.save(user);
 		
 	}
@@ -158,14 +125,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void editUser(long id, EditUserForm form){
-		User user = userRepository.getOne(id);
+		User user = updateUser(id, form);
+		userRepository.save(user);
+	}
+
+	private User updateUser(long userId, EditUserForm form) {
+		User user = userRepository.getOne(userId);
 		user.setUserName(form.getUserName());
-		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
+		if(form.isAdmin() && (hasRole(userId, "ROLE_LECTURER") && !hasRole(userId, "ROLE_ADMIN")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
+		}else if(form.isLecturer() && (hasRole(userId, "ROLE_ADMIN") && !hasRole(userId, "ROLE_LECTURER")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
 			user.setLecturer(form.isLecturer());
-		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
+		} else if ((!form.isAdmin()) && hasRole(userId, "ROLE_ADMIN")) {
 			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
 		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
@@ -177,7 +149,7 @@ public class UserServiceImpl implements UserService {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
 			user.setLecturer(form.isLecturer());
 		}
-		userRepository.save(user);
+		return user;
 	}
 	
 	@Transactional
