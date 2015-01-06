@@ -116,26 +116,8 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void editUser(long id, EditUserForm form, String password) {	
-		User user = userRepository.findOne(id);
-		user.setUserName(form.getUserName());
+		User user = updateUser(id, form);
 		user.setPassword(password);
-		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
-			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		} else if (user.getAuthorities().isEmpty() && form.isLecturer()){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		}else if(user.getAuthorities().isEmpty() && form.isLecturer() && form.isAdmin()){
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
-			user.setLecturer(form.isLecturer());
-		}
 		userRepository.save(user);
 		
 	}
@@ -143,14 +125,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void editUser(long id, EditUserForm form){
-		User user = userRepository.getOne(id);
+		User user = updateUser(id, form);
+		userRepository.save(user);
+	}
+
+	private User updateUser(long userId, EditUserForm form) {
+		User user = userRepository.getOne(userId);
 		user.setUserName(form.getUserName());
-		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
+		if(form.isAdmin() && (hasRole(userId, "ROLE_LECTURER") && !hasRole(userId, "ROLE_ADMIN")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
+		}else if(form.isLecturer() && (hasRole(userId, "ROLE_ADMIN") && !hasRole(userId, "ROLE_LECTURER")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
 			user.setLecturer(form.isLecturer());
-		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
+		} else if ((!form.isAdmin()) && hasRole(userId, "ROLE_ADMIN")) {
 			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
 		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
@@ -162,7 +149,7 @@ public class UserServiceImpl implements UserService {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
 			user.setLecturer(form.isLecturer());
 		}
-		userRepository.save(user);
+		return user;
 	}
 	
 	@Transactional
