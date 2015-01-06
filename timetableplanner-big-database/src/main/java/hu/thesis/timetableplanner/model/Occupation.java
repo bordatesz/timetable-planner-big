@@ -27,7 +27,7 @@ public class Occupation extends BaseEntity {
 	private String dateTime;
 
 	@ManyToMany(mappedBy = "occupations")
-	private List<Lecturer> lecturers;
+	private List<User> lecturers;
 
 	public String getName() {
 		return name;
@@ -45,11 +45,11 @@ public class Occupation extends BaseEntity {
 		this.dateTime = dateTime;
 	}
 
-	public List<Lecturer> getLecturers() {
+	public List<User> getLecturers() {
 		return lecturers;
 	}
 
-	public void setOktatokList(List<Lecturer> lecturers) {
+	public void setOktatokList(List<User> lecturers) {
 		this.lecturers = lecturers;
 	}
 

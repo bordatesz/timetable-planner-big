@@ -1,12 +1,9 @@
 package hu.thesis.timetableplanner.service.impl;
 
-import hu.thesis.timetableplanner.dto.LecturerDto;
 import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.form.CreateOccupationForm;
-import hu.thesis.timetableplanner.model.Lecturer;
 import hu.thesis.timetableplanner.model.Occupation;
 import hu.thesis.timetableplanner.pagination.Pagination;
-import hu.thesis.timetableplanner.repository.LecturerRepository;
 import hu.thesis.timetableplanner.repository.OccupationRepository;
 import hu.thesis.timetableplanner.service.OccupationService;
 import org.dozer.DozerBeanMapperSingletonWrapper;

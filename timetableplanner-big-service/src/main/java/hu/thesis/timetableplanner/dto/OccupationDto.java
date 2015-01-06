@@ -8,7 +8,7 @@ public class OccupationDto extends BaseDto {
 
     private String dateTime;
 
-    private List<LecturerDto> lecturers;
+    private List<UserDto> lecturers;
 
     public String getName() {
         return name;
@@ -26,11 +26,11 @@ public class OccupationDto extends BaseDto {
         this.dateTime = dateTime;
     }
 
-    public List<LecturerDto> getLecturers() {
+    public List<UserDto> getLecturers() {
         return lecturers;
     }
 
-    public void setLecturers(List<LecturerDto> lecturers) {
+    public void setLecturers(List<UserDto> lecturers) {
         this.lecturers = lecturers;
     }
 }

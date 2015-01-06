@@ -6,9 +6,9 @@ public class DepartmentDto extends BaseDto{
 
     private String name;
 
-    private LecturerDto responsible;
+    private UserDto responsible;
 
-    private List<LecturerDto> lecturers;
+    private List<UserDto> lecturers;
 
     public String getName() {
         return name;
@@ -18,19 +18,19 @@ public class DepartmentDto extends BaseDto{
         this.name = name;
     }
 
-    public LecturerDto getResponsible() {
+    public UserDto getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(LecturerDto responsible) {
+    public void setResponsible(UserDto responsible) {
         this.responsible = responsible;
     }
 
-    public List<LecturerDto> getLecturers() {
+    public List<UserDto> getLecturers() {
         return lecturers;
     }
 
-    public void setLecturers(List<LecturerDto> lecturers) {
+    public void setLecturers(List<UserDto> lecturers) {
         this.lecturers = lecturers;
     }
 

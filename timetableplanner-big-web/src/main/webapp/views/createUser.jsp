@@ -47,8 +47,12 @@
 			 		<form:input id="retypePassword" path="retypePassword" class="form-control" type="password" placeholder="Retype password"/>
 			 	</div>
 		 	</div>
+		 	<div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
+                <div class="col-sm-8 col-sm-offset-2"><form:label path="lecturer" class="control-label"> Lecturer role</form:label></div>
+            	<div class="col-sm-offset-6"><label><form:checkbox path="lecturer"/></label></div>
+            </div>
 	          <div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
-	            <div class="col-sm-8 col-sm-offset-2"><form:label path="admin" class="control-label"> Admin role is given </form:label></div>
+	            <div class="col-sm-8 col-sm-offset-2"><form:label path="admin" class="control-label"> Admin role</form:label></div>
 	            <div class="col-sm-offset-6"><label><form:checkbox path="admin"/></label></div>
 	          </div>
 		 	

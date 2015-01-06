@@ -17,11 +17,6 @@
   </mapping>
 
   <mapping>
-    <class-a>hu.thesis.timetableplanner.model.Lecturer</class-a>
-    <class-b>hu.thesis.timetableplanner.dto.LecturerDto</class-b>
-  </mapping>
-
-  <mapping>
     <class-a>hu.thesis.timetableplanner.model.Department</class-a>
     <class-b>hu.thesis.timetableplanner.dto.DepartmentDto</class-b>
   </mapping>

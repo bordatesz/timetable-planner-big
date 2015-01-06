@@ -43,10 +43,14 @@ public class UserServiceImpl implements UserService {
 		newUser.setPassword(form.getPassword());
 		
 		List<Authority> authorities = new ArrayList<Authority>();
-		authorities.add(authorityRepository.findByAuthority("ROLE_USER"));
 
 		if (form.isAdmin()) {
 			authorities.add(authorityRepository.findByAuthority("ROLE_ADMIN"));
+		}
+
+		if (form.isLecturer()) {
+			authorities.add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			newUser.setLecturer(form.isLecturer());
 		}
 		
 		newUser.setAuthorities(authorities);
@@ -79,14 +83,26 @@ public class UserServiceImpl implements UserService {
 		return new Pagination<UserDto>(userPage, users);
 	}
 
+	@Override
+	public Pagination<UserDto> findAllLecturerPageable(int pageNumber) {
+		boolean lecturer = true;
+		PageRequest page = new PageRequest(pageNumber - 1, Pagination.PAGE_SIZE, Sort.Direction.ASC, SORT_BY_USER_NAME);
+		Page<User> userPage = userRepository.findByLecturer(lecturer, page);
+		Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
+		List<UserDto> users = new ArrayList<UserDto>();
+
+		for (User user : userPage.getContent()) {
+			users.add(mapper.map(user, UserDto.class));
+		}
+
+		return new Pagination<UserDto>(userPage, users);
+	}
+
 	@Transactional
 	@Override
 	public boolean checkUser(String emailAdress) {
 		User user = userRepository.findByEmailAdress(emailAdress);
-		if(user == null){
-			return false;
-		}
-		return true;
+		return user != null;
 	}
 
 	@Transactional
@@ -118,14 +134,22 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findOne(id);
 		user.setUserName(form.getUserName());
 		user.setPassword(password);
-		if(form.isAdmin() && (hasRole(id, "ROLE_USER") && !hasRole(id, "ROLE_ADMIN")) ){
+		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")){
+		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
+		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
 			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(user.getAuthorities().isEmpty() && form.isAdmin()){
+		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_USER"));
-
+		} else if (user.getAuthorities().isEmpty() && form.isLecturer()){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
+		}else if(user.getAuthorities().isEmpty() && form.isLecturer() && form.isAdmin()){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
 		}
 		userRepository.save(user);
 		
@@ -136,15 +160,23 @@ public class UserServiceImpl implements UserService {
 	public void editUser(long id, EditUserForm form){
 		User user = userRepository.getOne(id);
 		user.setUserName(form.getUserName());
-		if(form.isAdmin() && (hasRole(id, "ROLE_USER") && !hasRole(id, "ROLE_ADMIN")) ){
+		if(form.isAdmin() && (hasRole(id, "ROLE_LECTURER") && !hasRole(id, "ROLE_ADMIN")) ){
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")){
+		}else if(form.isLecturer() && (hasRole(id, "ROLE_ADMIN") && !hasRole(id, "ROLE_LECTURER")) ){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
+		} else if ((!form.isAdmin()) && hasRole(id, "ROLE_ADMIN")) {
 			user.getAuthorities().remove(authorityRepository.findByAuthority("ROLE_ADMIN"));
-		}else if(user.getAuthorities().isEmpty() && form.isAdmin()){
+		}else if(user.getAuthorities().isEmpty() && form.isAdmin()) {
 			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
-			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_USER"));
+		} else if (user.getAuthorities().isEmpty() && form.isLecturer()){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
+		}else if(user.getAuthorities().isEmpty() && form.isLecturer() && form.isAdmin()){
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_ADMIN"));
+			user.getAuthorities().add(authorityRepository.findByAuthority("ROLE_LECTURER"));
+			user.setLecturer(form.isLecturer());
 		}
-		
 		userRepository.save(user);
 	}
 	
@@ -154,7 +186,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.getOne(id);
 		user.getAuthorities().clear();
 		userRepository.save(user);
-		userRepository.delete(user); // FIX THIS
+		userRepository.delete(user); //TODO FIX THIS
 	}
 
 
