@@ -156,9 +156,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(long id){
 		User user = userRepository.getOne(id);
-		user.getAuthorities().clear();
-		userRepository.save(user);
-		userRepository.delete(user); //TODO FIX THIS
+		userRepository.delete(user);
 	}
 
 

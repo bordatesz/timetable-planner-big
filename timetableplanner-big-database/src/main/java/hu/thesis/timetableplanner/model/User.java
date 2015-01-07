@@ -29,9 +29,9 @@ public class User extends BaseEntity {
 
 	private Boolean lecturer;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) //ALL?
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authorities")
-	private List<Authority> authorities;
+	private List<Authority> authorities; //TODO change these to hashset
 
 	private Integer requiredHours;
 
@@ -40,7 +40,9 @@ public class User extends BaseEntity {
 	@Column(length = 64)
 	private String phoneNumber;
 
-	@JoinTable(name = "occupied", joinColumns = { @JoinColumn(name = "lecturer", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "occupation", referencedColumnName = "id") })
+	@JoinTable(name = "occupied", joinColumns = {
+			@JoinColumn(name = "user", referencedColumnName = "id")}, inverseJoinColumns = {
+			@JoinColumn(name = "occupation", referencedColumnName = "id")})
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Occupation> occupations;
 

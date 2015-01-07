@@ -89,7 +89,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/admin/editUser/{id}", method = RequestMethod.GET)
-	public ModelAndView editUser(@PathVariable("id") long id,
+	public ModelAndView editUserGet(@PathVariable("id") long id,
 
 	HttpServletRequest request, @ModelAttribute String errorMessage) {
 
@@ -112,7 +112,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/editUser/{id}", method = RequestMethod.POST)
-	public String editUser(@PathVariable("id") long id,
+	public String editUserPost(@PathVariable("id") long id,
 			@Valid @ModelAttribute("form") EditUserForm form,
 			BindingResult result, RedirectAttributes redirectAttribute,
 			HttpServletRequest request) {
@@ -140,5 +140,7 @@ public class AdminController {
 		userService.deleteUser(id);
 		return "redirect:/admin/users/1";
 	}
+
+	//TODO create occupation
 
 }

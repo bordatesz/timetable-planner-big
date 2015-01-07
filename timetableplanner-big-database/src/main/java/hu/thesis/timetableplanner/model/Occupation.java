@@ -8,10 +8,7 @@ package hu.thesis.timetableplanner.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -26,8 +23,11 @@ public class Occupation extends BaseEntity {
 
 	private String dateTime;
 
-	@ManyToMany(mappedBy = "occupations")
-	private List<User> lecturers;
+	@JoinTable(name = "occupied", joinColumns = {
+			@JoinColumn(name = "occupation", referencedColumnName = "id")}, inverseJoinColumns = {
+			@JoinColumn(name = "user", referencedColumnName = "id")})
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<User> users;
 
 	public String getName() {
 		return name;
@@ -45,12 +45,12 @@ public class Occupation extends BaseEntity {
 		this.dateTime = dateTime;
 	}
 
-	public List<User> getLecturers() {
-		return lecturers;
+	public List<User> getUsers() {
+		return users;
 	}
 
 	public void setOktatokList(List<User> lecturers) {
-		this.lecturers = lecturers;
+		this.users = lecturers;
 	}
 
 }

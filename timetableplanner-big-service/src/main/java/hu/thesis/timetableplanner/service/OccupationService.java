@@ -1,16 +1,24 @@
 package hu.thesis.timetableplanner.service;
 
 import hu.thesis.timetableplanner.dto.OccupationDto;
-import hu.thesis.timetableplanner.form.CreateOccupationForm;
+import hu.thesis.timetableplanner.form.OccupationForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
 
 public interface OccupationService {
 
-    OccupationDto findById(long id);
+    public OccupationDto findById(long id);
 
-    OccupationDto findByName(String name);
+    public OccupationDto findByName(String name);
 
-    Pagination<OccupationDto> findAllOccupationPageable(int pageNumber);
+    public Pagination<OccupationDto> findAllOccupationPageable(int pageNumber);
 
-    Long createOccupation(CreateOccupationForm form);
+    public Long createOccupation(OccupationForm form);
+
+    public Long createUserOccupation(String actualUserEmail, OccupationForm form);
+
+    public void editOccupation(long id, OccupationForm form);
+
+    public void deleteOccupation(long id);
+
+    public void deleteUserOccupation(String actualUserEmail, long occupationId);
 }
