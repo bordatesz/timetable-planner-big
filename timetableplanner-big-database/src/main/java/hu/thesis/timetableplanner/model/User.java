@@ -50,6 +50,15 @@ public class User extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Department department;
 
+	@OneToOne(mappedBy="timetableResponsible")
+	private Department responsibleIn;
+
+	@OneToMany(mappedBy="responsible")
+	private List<Course> responsibleFor;
+
+	@OneToMany(mappedBy = "user")
+	private List<Teach> teach;
+
 	public String getUserName() {
 		return userName;
 	}
@@ -138,5 +147,28 @@ public class User extends BaseEntity {
 		this.department = department;
 	}
 
+	public Department getResponsibleIn() {
+		return responsibleIn;
+	}
+
+	public void setResponsibleIn(Department responsibleIn) {
+		this.responsibleIn = responsibleIn;
+	}
+
+	public List<Course> getResponsibleFor() {
+		return responsibleFor;
+	}
+
+	public void setResponsibleFor(List<Course> responsibleFor) {
+		this.responsibleFor = responsibleFor;
+	}
+
+	public List<Teach> getTeach() {
+		return teach;
+	}
+
+	public void setTeach(List<Teach> teach) {
+		this.teach = teach;
+	}
 
 }

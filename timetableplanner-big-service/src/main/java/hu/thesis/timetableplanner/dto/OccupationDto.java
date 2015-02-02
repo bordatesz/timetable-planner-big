@@ -1,12 +1,13 @@
 package hu.thesis.timetableplanner.dto;
 
+import java.util.Date;
 import java.util.List;
 
 public class OccupationDto extends BaseDto {
 
     private String name;
 
-    private String dateTime;
+    private Date dateTime;
 
     private List<UserDto> lecturers;
 
@@ -18,11 +19,11 @@ public class OccupationDto extends BaseDto {
         this.name = name;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

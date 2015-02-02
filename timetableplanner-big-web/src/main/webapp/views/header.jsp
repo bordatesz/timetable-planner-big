@@ -7,6 +7,7 @@
 	      <ul class="nav navbar-nav">
 	      	<sec:authorize ifAnyGranted="ROLE_LECTURER">
                 <li><a href="${pageContext.request.contextPath}/userOccupations">My Occupations</a></li>
+                <li><a href="${pageContext.request.contextPath}/userCourses">My Courses</a></li>
             </sec:authorize>
           </ul>
 	      <ul class="nav navbar-nav navbar-right">

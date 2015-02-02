@@ -28,10 +28,12 @@
 			 		<form:input id="name" path="name" class="form-control" type="text" placeholder="Occupation name"/>
 			 	</div>
 		 	</div>
-		 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
+            <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
                 <label for="dateTime">Date and Time</label>
-                <div class="form-group">
-                  	<form:input id="dateTime" path="dateTime" class="form-control" type="text" placeholder="Date and Time"/>
+                <div class="form-group input-group">
+                    <form:input id="dateTime" name="dateTime" path="dateTime" class="form-control" type="text"/>
+                    <label for="dateTime" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+                    </label>
                 </div>
             </div>
 
@@ -44,6 +46,14 @@
 	 </div>
 	 
  </div>
- 
+
+ <script type="text/javascript">
+             $(function () {
+                 $('#dateTime').datetimepicker({
+                 	format:'Y-m-d H:i',
+                    lang:'hu'});
+             });
+         </script>
+
 </body>
 </html>

@@ -6,6 +6,9 @@
 
 package hu.thesis.timetableplanner.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -21,7 +24,7 @@ public class Occupation extends BaseEntity {
 	@Column(nullable = false)
 	private String name;
 
-	private String dateTime;
+	private Date dateTime;
 
 	@JoinTable(name = "occupied", joinColumns = {
 			@JoinColumn(name = "occupation", referencedColumnName = "id")}, inverseJoinColumns = {
@@ -37,11 +40,11 @@ public class Occupation extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(String dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 

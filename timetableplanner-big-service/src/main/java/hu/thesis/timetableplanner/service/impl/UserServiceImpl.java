@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.thesis.timetableplanner.dto.UserDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;

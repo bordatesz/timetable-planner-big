@@ -21,12 +21,12 @@ public class Department extends BaseEntity {
 	@Column(length = 256, nullable = false)
 	private String name;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(referencedColumnName = "id", nullable = false)
-	private User responsible;
+	private User timetableResponsible;
 
 	@OneToMany(mappedBy = "department")
-	private List<User> lecturers;
+	private List<User> users;
 
 	public String getName() {
 		return name;
@@ -36,12 +36,20 @@ public class Department extends BaseEntity {
 		this.name = name;
 	}
 
-	public List<User> getLecturers() {
-		return lecturers;
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setLecturers(List<User> lecturers) {
-		this.lecturers = lecturers;
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public User getTimetableResponsible() {
+		return timetableResponsible;
+	}
+
+	public void setTimetableResponsible(User timetableResponsible) {
+		this.timetableResponsible = timetableResponsible;
 	}
 
 }

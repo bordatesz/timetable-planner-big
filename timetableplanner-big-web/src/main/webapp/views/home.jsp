@@ -14,9 +14,9 @@
 		<jsp:include page="header.jsp"/>
 		<br/><br/><br/><br/>
 		 <div class="container">
-			
-			<h1>WELCOME!!!</h1>
-			
+			<div class="jumbotron">
+              <h1>Welcome!</h1>
+            </div>
 		</div>
 	</div>
 	</body>

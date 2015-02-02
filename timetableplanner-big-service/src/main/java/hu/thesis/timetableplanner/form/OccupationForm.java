@@ -2,6 +2,7 @@ package hu.thesis.timetableplanner.form;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 public class OccupationForm {
 
@@ -9,7 +10,7 @@ public class OccupationForm {
     @Size(min=1,max=128)
     private String name;
 
-    private String dateTime;
+    private Date dateTime;
 
     public String getName() {
         return name;
@@ -19,11 +20,11 @@ public class OccupationForm {
         this.name = name;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 }
