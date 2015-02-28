@@ -46,6 +46,12 @@ public class User extends BaseEntity {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Occupation> occupations;
 
+    @JoinTable(name = "inGroup", joinColumns = {
+            @JoinColumn(name = "user", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "group", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Group> groups;
+
 	@JoinColumn(name = "department", referencedColumnName = "id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Department department;
@@ -139,7 +145,15 @@ public class User extends BaseEntity {
 		this.occupations = occupations;
 	}
 
-	public Department getDepartment() {
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public Department getDepartment() {
 		return department;
 	}
 

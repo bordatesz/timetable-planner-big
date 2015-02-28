@@ -32,6 +32,12 @@ public class Occupation extends BaseEntity {
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<User> users;
 
+    @JoinTable(name = "groupOccupied", joinColumns = {
+            @JoinColumn(name = "occupation", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "group", referencedColumnName = "id")})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Group> groups;
+
 	public String getName() {
 		return name;
 	}
@@ -52,8 +58,15 @@ public class Occupation extends BaseEntity {
 		return users;
 	}
 
-	public void setOktatokList(List<User> lecturers) {
-		this.users = lecturers;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 }
