@@ -6,8 +6,6 @@
 
 package hu.thesis.timetableplanner.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +32,9 @@ public class Occupation extends BaseEntity {
 
     @JoinTable(name = "groupOccupied", joinColumns = {
             @JoinColumn(name = "occupation", referencedColumnName = "id")}, inverseJoinColumns = {
-            @JoinColumn(name = "group", referencedColumnName = "id")})
+            @JoinColumn(name = "occupationGroup", referencedColumnName = "id")})
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Group> groups;
+    private List<OccupationGroup> occupationGroups;
 
 	public String getName() {
 		return name;
@@ -62,11 +60,11 @@ public class Occupation extends BaseEntity {
 		this.users = users;
 	}
 
-    public List<Group> getGroups() {
-        return groups;
+    public List<OccupationGroup> getOccupationGroups() {
+        return occupationGroups;
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public void setOccupationGroups(List<OccupationGroup> occupationGroups) {
+        this.occupationGroups = occupationGroups;
     }
 }

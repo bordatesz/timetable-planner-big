@@ -25,5 +25,10 @@
     <class-a>hu.thesis.timetableplanner.model.Course</class-a>
     <class-b>hu.thesis.timetableplanner.dto.CourseDto</class-b>
   </mapping>
-  
+
+  <mapping>
+    <class-a>hu.thesis.timetableplanner.model.OccupationGroup</class-a>
+    <class-b>hu.thesis.timetableplanner.dto.OccupationGroupDto</class-b>
+  </mapping>
+
 </mappings>
