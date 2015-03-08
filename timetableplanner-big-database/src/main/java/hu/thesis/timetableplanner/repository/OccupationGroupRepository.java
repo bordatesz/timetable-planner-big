@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface OccupationGroupRepository extends JpaRepository<OccupationGroup, Long> {
 
-
     OccupationGroup findById(Long id);
 
     OccupationGroup findByName(String name);

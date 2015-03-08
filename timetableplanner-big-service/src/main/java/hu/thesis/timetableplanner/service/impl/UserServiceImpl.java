@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
 		return new Pagination<UserDto>(userPage, users);
 	}
 
+    @Transactional
 	@Override
 	public Pagination<UserDto> findAllLecturerPageable(int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber - 1, Pagination.PAGE_SIZE, Sort.Direction.ASC, SORT_BY_USER_NAME);

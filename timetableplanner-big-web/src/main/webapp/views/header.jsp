@@ -7,6 +7,7 @@
 	      <ul class="nav navbar-nav">
 	      	<sec:authorize ifAnyGranted="ROLE_LECTURER">
                 <li><a href="${pageContext.request.contextPath}/userOccupations">My Occupations</a></li>
+                <li><a href="${pageContext.request.contextPath}/userOccupationGroups">My Groups</a></li>
                 <li><a href="${pageContext.request.contextPath}/userCourses">My Courses</a></li>
             </sec:authorize>
           </ul>
@@ -18,6 +19,7 @@
 	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/createuser">Create user</a></li>
 	                <li role="presentation" class="divider"></li>
 	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">List users</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupationGroups/1">List user groups</a></li>
 	            </ul>
 	          </li>
 	        </sec:authorize>

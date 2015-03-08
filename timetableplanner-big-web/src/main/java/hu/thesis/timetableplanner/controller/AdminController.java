@@ -4,11 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import hu.thesis.timetableplanner.dto.AuthorityDto;
+import hu.thesis.timetableplanner.dto.OccupationGroupDto;
 import hu.thesis.timetableplanner.dto.UserDto;
 import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;
 import hu.thesis.timetableplanner.form.EditUserForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
+import hu.thesis.timetableplanner.service.OccupationGroupService;
 import hu.thesis.timetableplanner.service.OccupationService;
 import hu.thesis.timetableplanner.service.UserService;
 
@@ -35,6 +37,9 @@ public class AdminController {
 
 	@Autowired
 	private OccupationService occupationService;
+
+    @Autowired
+    private OccupationGroupService occupationGroupService;
 
 	@InitBinder
     public void initBinder(WebDataBinder binder){
@@ -141,6 +146,24 @@ public class AdminController {
 		return "redirect:/admin/users/1";
 	}
 
-	//TODO create occupation
+    @RequestMapping(value = "/admin/occupationGroups/{pageNumber}", method = RequestMethod.GET)
+    public ModelAndView listGroups(@PathVariable("pageNumber") int pageNumber,
+                                  HttpServletRequest request) {
+        ModelAndView model = new ModelAndView("adminOccupationGroupsList");
+
+        Pagination<OccupationGroupDto> page = occupationGroupService.findAllOccupationGroupPageable(pageNumber);
+        page.setPageName("/admin/occupationGroups");
+        model.addObject("page", page);
+
+        return model;
+    }
+
+    @RequestMapping(value = "/admin/deleteOccupationGroup/{id}", method = RequestMethod.GET)
+    public String deleteOccupationGroup(@PathVariable("id") long id) {
+        occupationGroupService.deleteOccupationGroup(id);
+        return "redirect:/admin/occupationGroups/1";
+    }
+
+	//TODO create occupations
 
 }
