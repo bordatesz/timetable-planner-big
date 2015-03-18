@@ -1,6 +1,7 @@
 package hu.thesis.timetableplanner.service.impl;
 
 import hu.thesis.timetableplanner.dto.OccupationGroupDto;
+import hu.thesis.timetableplanner.form.OccupationGroupForm;
 import hu.thesis.timetableplanner.model.OccupationGroup;
 import hu.thesis.timetableplanner.pagination.Pagination;
 import hu.thesis.timetableplanner.repository.OccupationGroupRepository;
@@ -47,6 +48,14 @@ public class OccupationGroupServiceImpl implements OccupationGroupService {
                 .map((occupationGroup) -> mapper.map(occupationGroup, OccupationGroupDto.class))
                 .collect(Collectors.toList());
         return new Pagination<OccupationGroupDto>(occupationGroupPage, occupationGroups);
+    }
+
+    @Override
+    public Long createOccupationGroup(OccupationGroupForm form) {
+        OccupationGroup newOccupation = new OccupationGroup();
+        newOccupation.setName(form.getName());
+
+        return occupationGroupRepository.save(newOccupation).getId();
     }
 
     @Override

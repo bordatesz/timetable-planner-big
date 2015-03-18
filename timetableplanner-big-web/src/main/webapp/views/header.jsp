@@ -16,10 +16,8 @@
 	          <li class="dropdown">
 	            <a href="#" id="drop" role="button" class="dropdown-toggle" data-toggle="dropdown">Admin page <span class="caret"></span></a>
 	            <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/createuser">Create user</a></li>
-	                <li role="presentation" class="divider"></li>
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">List users</a></li>
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupationGroups/1">List user groups</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">Users</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupationGroups/1">User groups</a></li>
 	            </ul>
 	          </li>
 	        </sec:authorize>

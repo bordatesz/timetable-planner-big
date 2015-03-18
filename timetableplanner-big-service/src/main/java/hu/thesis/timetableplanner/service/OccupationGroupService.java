@@ -1,6 +1,7 @@
 package hu.thesis.timetableplanner.service;
 
 import hu.thesis.timetableplanner.dto.OccupationGroupDto;
+import hu.thesis.timetableplanner.form.OccupationGroupForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
 
 /**
@@ -18,6 +19,8 @@ public interface OccupationGroupService {
      */
 
     public Pagination<OccupationGroupDto> findAllOccupationGroupPageable(int pageNumber);
+
+    public Long createOccupationGroup(OccupationGroupForm form);
 
     public void deleteOccupationGroup(long id);
 }

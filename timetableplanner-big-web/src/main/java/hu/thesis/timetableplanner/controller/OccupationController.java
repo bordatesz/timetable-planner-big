@@ -51,6 +51,17 @@ public class OccupationController {
         return model;
     }
 
+    @RequestMapping(value = "/admin/occupations/{pageNumber}", method = RequestMethod.GET) //TODO pageable?
+    public ModelAndView listOccupations(@PathVariable("pageNumber") int pageNumber, HttpServletRequest request) {
+        ModelAndView model = new ModelAndView("admin/occupationList");
+
+        Pagination<OccupationDto> page = occupationService.findAllOccupationPageable(pageNumber);
+        page.setPageName("/admin/occupations");
+        model.addObject("page", page);
+
+        return model;
+    }
+
     @RequestMapping(value = "/addUserOccupation", method = RequestMethod.GET)
     public ModelAndView createUserOccupationGet(HttpServletRequest request,
                                       @ModelAttribute String errorMessage) {
@@ -77,11 +88,11 @@ public class OccupationController {
 
     }
 
-    @RequestMapping(value = "/addOccupation", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/addOccupation", method = RequestMethod.GET)
     public ModelAndView createOccupationGet(HttpServletRequest request,
                                                 @ModelAttribute String errorMessage) {
 
-        ModelAndView model = new ModelAndView("createOccupation");
+        ModelAndView model = new ModelAndView("admin/createOccupation");
         OccupationForm form = new OccupationForm();
         model.addObject("form", form);
         request.setAttribute("errorMessage", errorMessage);
@@ -89,17 +100,17 @@ public class OccupationController {
         return model;
     }
 
-    @RequestMapping(value = "/addOccupation", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/addOccupation", method = RequestMethod.POST)
     public String createOccupationPost(HttpServletRequest request,
                                  @Valid @ModelAttribute("form") OccupationForm form,
                                  BindingResult result, RedirectAttributes redirectAttributes) {
         if (!result.hasErrors()) {
             occupationService.createOccupation(form);
-            return "redirect:/occupations/1";
+            return "redirect:/admin/occupations/1";
         }
         redirectAttributes.addFlashAttribute("errorMessage",
                 "There is some error" + result.toString());
-        return "redirect:/addOccupation";
+        return "redirect:/admin/addOccupation";
 
     }
 
@@ -131,11 +142,11 @@ public class OccupationController {
         return "redirect:/editUserOccupation/" + id;
     }
 
-    @RequestMapping(value = "/editOccupation/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/editOccupation/{id}", method = RequestMethod.GET)
     public ModelAndView editOccupationGet(@PathVariable("id") long id,
                                  HttpServletRequest request, @ModelAttribute String errorMessage) {
 
-        ModelAndView model = new ModelAndView("editOccupation");
+        ModelAndView model = new ModelAndView("admin/editOccupation");
         OccupationForm form = new OccupationForm();
         OccupationDto occupation = occupationService.findById(id);
 
@@ -145,7 +156,7 @@ public class OccupationController {
         return model;
     }
 
-    @RequestMapping(value = "/editOccupation/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/editOccupation/{id}", method = RequestMethod.POST)
     public String editOccupationPost(@PathVariable("id") long id,
                                      @Valid @ModelAttribute("form") OccupationForm form,
                            BindingResult result, RedirectAttributes redirectAttribute,
@@ -153,10 +164,10 @@ public class OccupationController {
 
         if (!result.hasErrors()) {
             occupationService.editOccupation(id, form);
-            return "redirect:/occupations/1";
+            return "redirect:/admin/occupations/1";
         }
         redirectAttribute.addFlashAttribute("errorMessage", "An error  occured: " + result.toString());
-        return "redirect:/editOccupation/" + id;
+        return "redirect:/admin/editOccupation/" + id;
     }
 
     @RequestMapping(value = "/removeUserOccupation/{id}", method = RequestMethod.GET)  //alias remove
@@ -171,7 +182,7 @@ public class OccupationController {
         return "redirect:/userOccupations";
     }
 
-    @RequestMapping(value = "/deleteOccupation/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/deleteOccupation/{id}", method = RequestMethod.GET)
     public String deleteOccupation(@PathVariable("id") long id) {
         occupationService.deleteOccupation(id);
         return "redirect:/occupations/1";

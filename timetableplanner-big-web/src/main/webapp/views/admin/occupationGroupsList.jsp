@@ -12,12 +12,15 @@
 	</head>
 
 	<body>
-		<jsp:include page="header.jsp"/>
+		<jsp:include page="/views/header.jsp"/>
     <div class="container">
         <div class="row"><div class="col-md-12"><hr></div></div>
         <div class="row"><div class="col-md-12"><hr></div></div>
 
         <div class="row"><h3 class="col-md-12">User Occupation Groups</h3></div>
+        <div class="btn-group" style="margin-bottom:10px;margin-top:10px;">
+            <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/createOccupationGroup">Add New</a>
+        </div>
         <c:choose>
             <c:when test="${not empty page.content}">
                 <div class="row">

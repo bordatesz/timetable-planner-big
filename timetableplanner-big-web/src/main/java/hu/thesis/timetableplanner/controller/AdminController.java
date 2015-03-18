@@ -38,19 +38,17 @@ public class AdminController {
 	@Autowired
 	private OccupationService occupationService;
 
-    @Autowired
-    private OccupationGroupService occupationGroupService;
 
 	@InitBinder
     public void initBinder(WebDataBinder binder){
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 	
-	@RequestMapping(value = "/admin/createuser", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/createUser", method = RequestMethod.GET)
 	public ModelAndView createUserGet(HttpServletRequest request,
 			@ModelAttribute String errorMessage) {
 
-		ModelAndView model = new ModelAndView("createUser");
+		ModelAndView model = new ModelAndView("admin/createUser");
 		CreateUserForm form = new CreateUserForm();
 		model.addObject("form", form);
 		request.setAttribute("errorMessage", errorMessage);
@@ -58,7 +56,7 @@ public class AdminController {
 		return model;
 	}
 
-	@RequestMapping(value = "/admin/createuser", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/createUser", method = RequestMethod.POST)
 	public String createUserPost(HttpServletRequest request,
 			@Valid @ModelAttribute("form") CreateUserForm form,
 			BindingResult result, RedirectAttributes redirectAttributes) {
@@ -84,7 +82,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin/users/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView listUsers(@PathVariable("pageNumber") int pageNumber,
 			HttpServletRequest request) {
-		ModelAndView model = new ModelAndView("adminUsersList");
+		ModelAndView model = new ModelAndView("admin/usersList");
 
 		Pagination<UserDto> page = userService.findAllUserPageable(pageNumber);
 		page.setPageName("/admin/users");
@@ -98,7 +96,7 @@ public class AdminController {
 
 	HttpServletRequest request, @ModelAttribute String errorMessage) {
 
-		ModelAndView model = new ModelAndView("editUser");
+		ModelAndView model = new ModelAndView("admin/editUser");
 		EditUserForm editUser = new EditUserForm();
 		UserDto user = userService.findById(id);
 		
@@ -145,25 +143,5 @@ public class AdminController {
 		userService.deleteUser(id);
 		return "redirect:/admin/users/1";
 	}
-
-    @RequestMapping(value = "/admin/occupationGroups/{pageNumber}", method = RequestMethod.GET)
-    public ModelAndView listGroups(@PathVariable("pageNumber") int pageNumber,
-                                  HttpServletRequest request) {
-        ModelAndView model = new ModelAndView("adminOccupationGroupsList");
-
-        Pagination<OccupationGroupDto> page = occupationGroupService.findAllOccupationGroupPageable(pageNumber);
-        page.setPageName("/admin/occupationGroups");
-        model.addObject("page", page);
-
-        return model;
-    }
-
-    @RequestMapping(value = "/admin/deleteOccupationGroup/{id}", method = RequestMethod.GET)
-    public String deleteOccupationGroup(@PathVariable("id") long id) {
-        occupationGroupService.deleteOccupationGroup(id);
-        return "redirect:/admin/occupationGroups/1";
-    }
-
-	//TODO create occupations
 
 }
