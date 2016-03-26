@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@ include file="/views/headerAssets.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/datetimepicker-plugin/css/jquery.datetimepicker.css">
+<script src="${pageContext.request.contextPath}/resources/datetimepicker-plugin/js/jquery.datetimepicker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/datetimepicker-plugin/js/jquery.datetimeformat.js"></script>
 
 <title>Create user occupation</title>
 
@@ -46,14 +49,5 @@
 	 </div>
 	 
  </div>
-
- <script type="text/javascript">
-             $(function () {
-                 $('#dateTime').datetimepicker({
-                 	format:'Y-m-d H:i',
-                    lang:'hu'});
-             });
-         </script>
-
 </body>
 </html>

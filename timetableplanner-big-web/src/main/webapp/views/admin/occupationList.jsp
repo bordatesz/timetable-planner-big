@@ -17,7 +17,7 @@
         <div class="row"><div class="col-md-12"><hr></div></div>
         <div class="row"><div class="col-md-12"><hr></div></div>
 
-        <div class="row"><h3 class="col-md-12">Users</h3></div>
+        <div class="row"><h3 class="col-md-12">User Occupations</h3></div>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered table-condensed table-hover table-striped">
@@ -36,8 +36,8 @@
                             <td>${occupation.name}</td>
                             <td>${occupation.dateTime}</td>
                             <td class="table-buttons">
-                              <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editUser/${occupation.id}">Edit</a>
-                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteUser/${occupation.id}">Delete</a>
+                              <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editOccupation/${occupation.id}">Edit</a>
+                              <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteOccupation/${occupation.id}">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>

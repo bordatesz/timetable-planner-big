@@ -42,8 +42,7 @@
                                     <fmt:formatDate value="${occupation.dateTime}" var="dateTime" pattern="yyyy-MM-dd HH:mm" />
                                     <td>${dateTime}</td>
                                     <td class="table-buttons">
-                                      <a class="btn btn-info" href="${pageContext.request.contextPath}/editOccupation/${occupation.id}">Edit</a>
-                                      <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/removeUserOccupation/${occupation.id}">Remove</a>
+                                      <a class="btn btn-info" href="${pageContext.request.contextPath}/editUserOccupation/${occupation.id}">Edit</a>
                                       <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/deleteUserOccupation/${occupation.id}">Delete</a>
                                     </td>
                                 </tr>

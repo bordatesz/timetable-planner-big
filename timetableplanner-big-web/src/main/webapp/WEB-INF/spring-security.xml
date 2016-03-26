@@ -34,7 +34,7 @@
 		<intercept-url pattern="/login*" access="permitAll()" />
 		<intercept-url pattern="/resources/**" access="permitAll()" />
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
-	    <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+	    <intercept-url pattern="/admin/**" access="ROLE_SYS_ADMIN"/>  <!-- "hasRole('ROLE_ADMIN')" -->
 	    
 	</http>
 	

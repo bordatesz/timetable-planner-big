@@ -8,10 +8,10 @@ public class CreateUserForm {
 	
 	private static final String REGEXP_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[-?#!_])[a-zA-Z0-9-?#!_]{3,}$";
 
-	@NotNull @Size(min=1,max=128)
+	@NotNull @Size(min=1,max=128, message = "Don't be stupid!")
 	private String userName;
 
-	@NotNull@Size(min=4,max=128)
+	@NotNull@Size(min=4,max=128,  message = "Don't be stupid!")
 	private String emailAdress;
 
 	@NotNull

@@ -70,12 +70,12 @@ public class AdminController {
 			} else {
 				redirectAttributes.addFlashAttribute("errorMessage",
 						"This user is already exist");
-				return "redirect:/admin/createuser";
+				return "redirect:/admin/createUser";
 			}
 		}
 		redirectAttributes.addFlashAttribute("errorMessage",
 				"There is some error" + result.toString());
-		return "redirect:/admin/createuser";
+		return "redirect:/admin/createUser";
 
 	}	
 
@@ -101,7 +101,7 @@ public class AdminController {
 		UserDto user = userService.findById(id);
 		
 		for (AuthorityDto authority : user.getAuthorities()) {
-            if(authority.getAuthority().equals("ROLE_ADMIN")){
+            if(authority.getAuthority().equals("ROLE_SYS_ADMIN")){
                 editUser.setAdmin(true);
             } else if(authority.getAuthority().equals("ROLE_LECTURER")){
 				editUser.setLecturer(true);

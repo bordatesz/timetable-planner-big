@@ -36,7 +36,7 @@ public class OccupationController {
     public void initBinder(WebDataBinder binder){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true)); //TODO fix date to string conversion in form
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
     @RequestMapping(value = "/userOccupations", method = RequestMethod.GET) //TODO pageable?
@@ -120,7 +120,7 @@ public class OccupationController {
 
         ModelAndView model = new ModelAndView("editOccupation");
         OccupationForm form = new OccupationForm();
-        OccupationDto occupation = occupationService.findById(id);
+        OccupationDto occupation = occupationService.findById(id); //USert le kell kérni, és ellenőrzni hogy hozzá tartozik e
 
         model.addObject("occupation", occupation);
         model.addObject("form", form);
@@ -142,6 +142,8 @@ public class OccupationController {
         return "redirect:/editUserOccupation/" + id;
     }
 
+    //TODO Ez felesleges, mert ha egy metódussal (GET/POST) ROLE-t ellenőrizve szerveroldalon ellenőrzöm, akkor elég egy
+    //TODO: Here is the method you should use for checking the user role: "public boolean hasRole(long id, String role)"
     @RequestMapping(value = "/admin/editOccupation/{id}", method = RequestMethod.GET)
     public ModelAndView editOccupationGet(@PathVariable("id") long id,
                                  HttpServletRequest request, @ModelAttribute String errorMessage) {

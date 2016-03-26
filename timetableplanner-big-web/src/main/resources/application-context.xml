@@ -24,6 +24,7 @@
   </bean>
 
   <!-- For Messages from properties file(messages.properties)    -->
+    <!-- For localisation    -->
   <bean id="messageSource"
     class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basename" value="messages" />

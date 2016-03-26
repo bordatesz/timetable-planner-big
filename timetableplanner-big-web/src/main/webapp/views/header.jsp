@@ -7,17 +7,18 @@
 	      <ul class="nav navbar-nav">
 	      	<sec:authorize ifAnyGranted="ROLE_LECTURER">
                 <li><a href="${pageContext.request.contextPath}/userOccupations">My Occupations</a></li>
-                <li><a href="${pageContext.request.contextPath}/userOccupationGroups">My Groups</a></li>
+                <li><a href="${pageContext.request.contextPath}/userOccupationGroups">My Occupation Groups</a></li>
                 <li><a href="${pageContext.request.contextPath}/userCourses">My Courses</a></li>
             </sec:authorize>
           </ul>
 	      <ul class="nav navbar-nav navbar-right">
-	        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+	        <sec:authorize ifAnyGranted="ROLE_SYS_ADMIN">
 	          <li class="dropdown">
 	            <a href="#" id="drop" role="button" class="dropdown-toggle" data-toggle="dropdown">Admin page <span class="caret"></span></a>
 	            <ul class="dropdown-menu" role="menu" aria-labelledby="drop">
 	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/users/1">Users</a></li>
-	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupationGroups/1">User groups</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupations/1">Occupations</a></li>
+	                <li role="presentation"><a role="menuitem" tabindex="-1" href="${pageContext.request.contextPath}/admin/occupationGroups/1">Occupation groups</a></li>
 	            </ul>
 	          </li>
 	        </sec:authorize>

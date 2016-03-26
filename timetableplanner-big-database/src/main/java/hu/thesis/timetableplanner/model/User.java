@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authorities")
-	private List<Authority> authorities; //TODO change these to hashset
+	private List<Authority> authorities;
 
 	private Integer requiredHours;
 
