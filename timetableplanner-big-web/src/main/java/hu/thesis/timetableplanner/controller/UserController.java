@@ -1,39 +1,36 @@
 package hu.thesis.timetableplanner.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
 import hu.thesis.timetableplanner.dto.AuthorityDto;
-import hu.thesis.timetableplanner.dto.OccupationGroupDto;
 import hu.thesis.timetableplanner.dto.UserDto;
-import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;
 import hu.thesis.timetableplanner.form.EditUserForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
-import hu.thesis.timetableplanner.service.OccupationGroupService;
+import hu.thesis.timetableplanner.service.AuthorityService;
 import hu.thesis.timetableplanner.service.OccupationService;
 import hu.thesis.timetableplanner.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class AdminController {
+public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+    @Autowired
+    private AuthorityService authorityService;
 
 	@Autowired
 	private OccupationService occupationService;
@@ -46,10 +43,16 @@ public class AdminController {
 	
 	@RequestMapping(value = "/admin/createUser", method = RequestMethod.GET)
 	public ModelAndView createUserGet(HttpServletRequest request,
-			@ModelAttribute String errorMessage) {
+			@ModelAttribute String errorMessage, Principal principal) {
+
+		if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+			return new ModelAndView("redirect:/permissionViolation");
+		}
 
 		ModelAndView model = new ModelAndView("admin/createUser");
 		CreateUserForm form = new CreateUserForm();
+        List<AuthorityDto> roles = authorityService.findAllAuthority();
+        model.addObject("roles", roles);
 		model.addObject("form", form);
 		request.setAttribute("errorMessage", errorMessage);
 
@@ -61,7 +64,7 @@ public class AdminController {
 			@Valid @ModelAttribute("form") CreateUserForm form,
 			BindingResult result, RedirectAttributes redirectAttributes) {
 
-		boolean userExist = userService.checkUser(form.getEmailAdress());
+		boolean userExist = userService.checkUser(form.getEmailAddress());
 
 		if (!result.hasErrors()) {
 			if (!userExist) {
@@ -77,15 +80,19 @@ public class AdminController {
 				"There is some error" + result.toString());
 		return "redirect:/admin/createUser";
 
-	}	
+	}
 
 	@RequestMapping(value = "/admin/users/{pageNumber}", method = RequestMethod.GET)
 	public ModelAndView listUsers(@PathVariable("pageNumber") int pageNumber,
-			HttpServletRequest request) {
-		ModelAndView model = new ModelAndView("admin/usersList");
+								  HttpServletRequest request, Principal principal) {
 
+		if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+			return new ModelAndView("redirect:/permissionViolation");
+		}
+
+		ModelAndView model = new ModelAndView("admin/usersList");
 		Pagination<UserDto> page = userService.findAllUserPageable(pageNumber);
-		page.setPageName("/admin/users");
+		page.setPageName("admin/users");
 		model.addObject("page", page);
 
 		return model;
@@ -93,23 +100,27 @@ public class AdminController {
 	
 	@RequestMapping(value = "/admin/editUser/{id}", method = RequestMethod.GET)
 	public ModelAndView editUserGet(@PathVariable("id") long id,
+	HttpServletRequest request, @ModelAttribute String errorMessage, Principal principal) {
 
-	HttpServletRequest request, @ModelAttribute String errorMessage) {
+		if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+			return new ModelAndView("redirect:/permissionViolation");
+		}
 
 		ModelAndView model = new ModelAndView("admin/editUser");
-		EditUserForm editUser = new EditUserForm();
+		EditUserForm form = new EditUserForm();
 		UserDto user = userService.findById(id);
-		
-		for (AuthorityDto authority : user.getAuthorities()) {
-            if(authority.getAuthority().equals("ROLE_SYS_ADMIN")){
-                editUser.setAdmin(true);
-            } else if(authority.getAuthority().equals("ROLE_LECTURER")){
-				editUser.setLecturer(true);
-			}
-        }
-		
+        List<AuthorityDto> roles = authorityService.findAllAuthority();
+
+		List<String> userRoleNames = new ArrayList<>();
+		for(AuthorityDto userRole : user.getAuthorities()){
+			userRoleNames.add(userRole.getAuthority());
+		}
+		form.setUserRoles(userRoleNames);
+
+		//TODO: USer feltöltése minden role-al itt kéne?
 		model.addObject("user", user);
-		model.addObject("editUser", editUser);
+        model.addObject("roles", roles);
+		model.addObject("form", form);
 		request.setAttribute("errorMessage", errorMessage);
 		return model;
 	}
@@ -139,9 +150,15 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/deleteUser/{id}", method = RequestMethod.GET)
-	public String deleteUser(@PathVariable("id") long id) {
+	public String deleteUser(@PathVariable("id") long id, Principal principal) {
+
+		if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+			return "redirect:/permissionViolation";
+		}
+
 		userService.deleteUser(id);
 		return "redirect:/admin/users/1";
 	}
+
 
 }

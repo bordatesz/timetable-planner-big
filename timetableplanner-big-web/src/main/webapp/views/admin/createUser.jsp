@@ -29,10 +29,10 @@
 			 	</div>
 		 	</div>
 			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
-			 	<label for="emailAdress">Email</label>		 			 		
+			 	<label for="emailAddress">Email</label>		 			 		
 			 	<div class="input-group">
 			 		<span class="input-group-addon">@</span>
-			 		<form:input id="emailAdress" path="emailAdress" class="form-control" type="email" placeholder="Email"/>		 			
+			 		<form:input id="emailAddress" path="emailAddress" class="form-control" type="email" placeholder="Email"/>		 			
 			 	</div>
 		 	</div>
 		 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
@@ -47,14 +47,16 @@
 			 		<form:input id="retypePassword" path="retypePassword" class="form-control" type="password" placeholder="Retype password"/>
 			 	</div>
 		 	</div>
-		 	<div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
-                <div class="col-sm-8 col-sm-offset-2"><form:label path="lecturer" class="control-label"> Lecturer role</form:label></div>
-            	<div class="col-sm-offset-6"><label><form:checkbox path="lecturer"/></label></div>
-            </div>
 	          <div class="form-group col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">
-	            <div class="col-sm-8 col-sm-offset-2"><form:label path="admin" class="control-label"> Admin role</form:label></div>
-	            <div class="col-sm-offset-6"><label><form:checkbox path="admin"/></label></div>
-	          </div>
+                                  <label class="col-md-3 control-lable" for="userRoles">Roles</label>
+                                  <div class="col-md-7">
+                                       <form:select path="userRoles" items="${roles}" var="role" multiple="true" itemValue="authority"
+                                            itemLabel="authority" class="form-control" />
+                                        <div class="has-error">
+                                             <form:errors path="userRoles" class="help-inline"/>
+                                       </div>
+                                  </div>
+                            </div>
 		 	
 		 	
 		 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">

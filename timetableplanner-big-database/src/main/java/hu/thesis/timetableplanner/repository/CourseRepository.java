@@ -15,5 +15,10 @@ public interface CourseRepository  extends JpaRepository<Course, Long> {
 
     Course findByName(String name);
 
+    List<Course> findByResponsibleEmailAddress(String responsibleEmailAddress);
+
+    //TODO: Ezekre nincs valami isexist vagy ilyesmi string reposiotyban hogy booleannel térjen vissza?
+    Course findByNameAndCurriculaAndPeriod(String name, Integer curricula, Integer period);
+
     //List<Course> findByTeachUser(User user);
 }

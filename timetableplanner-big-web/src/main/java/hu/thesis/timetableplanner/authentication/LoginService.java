@@ -1,19 +1,8 @@
 package hu.thesis.timetableplanner.authentication;
 
-import hu.thesis.timetableplanner.authentication.LoginService;
 import hu.thesis.timetableplanner.dto.AuthorityDto;
 import hu.thesis.timetableplanner.dto.UserDto;
-import hu.thesis.timetableplanner.model.Authority;
-import hu.thesis.timetableplanner.repository.UserRepository;
 import hu.thesis.timetableplanner.service.UserService;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A custom {@link UserDetailsService} where user information
@@ -42,7 +34,7 @@ public class LoginService implements UserDetailsService {
 	 */
 	public UserDetails loadUserByUsername(String emailAdress) throws UsernameNotFoundException {
 		
-		UserDto user = userService.findByEmailAdress(emailAdress);
+		UserDto user = userService.findByEmailAddress(emailAdress);
 		List<AuthorityDto> authoritiesDto =  user.getAuthorities();
 		
 		if(authoritiesDto.isEmpty()){
@@ -66,7 +58,7 @@ public class LoginService implements UserDetailsService {
 	private UserDetails buildAuthenticatedUser(UserDto user,
 			List<GrantedAuthority> authorities) {
 
-		return new User(user.getEmailAdress(), user.getPassword(), true, true, true, true, authorities);
+		return new User(user.getEmailAddress(), user.getPassword(), true, true, true, true, authorities);
 	}
 	
 }

@@ -19,7 +19,7 @@
 
         <div class="row"><h3 class="col-md-12">My Occupations</h3></div>
         <div class="btn-group" style="margin-bottom:10px;margin-top:10px;">
-            <a class="btn btn-info" href="${pageContext.request.contextPath}/addUserOccupation">Add New</a>
+            <a class="btn btn-info" href="${pageContext.request.contextPath}/addOccupation">Add New</a>
         </div>
         <c:choose>
             <c:when test="${not empty userOccupations}">
@@ -42,8 +42,8 @@
                                     <fmt:formatDate value="${occupation.dateTime}" var="dateTime" pattern="yyyy-MM-dd HH:mm" />
                                     <td>${dateTime}</td>
                                     <td class="table-buttons">
-                                      <a class="btn btn-info" href="${pageContext.request.contextPath}/editUserOccupation/${occupation.id}">Edit</a>
-                                      <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/deleteUserOccupation/${occupation.id}">Delete</a>
+                                      <a class="btn btn-info" href="${pageContext.request.contextPath}/editOccupation/${occupation.id}">Edit</a>
+                                      <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/deleteOccupation/${occupation.id}">Delete</a>
                                     </td>
                                 </tr>
                             </c:forEach>

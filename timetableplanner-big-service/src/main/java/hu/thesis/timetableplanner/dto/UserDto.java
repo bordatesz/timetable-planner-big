@@ -4,7 +4,7 @@ import java.util.List;
 
 public class UserDto extends BaseDto {
 
-    private String emailAdress;
+    private String emailAddress;
 
     private String userName;
 
@@ -24,12 +24,12 @@ public class UserDto extends BaseDto {
 
     private List<OccupationDto> occupations;
 
-    public String getEmailAdress() {
-        return emailAdress;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmailAdress(String emailAdress) {
-        this.emailAdress = emailAdress;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getUserName() {

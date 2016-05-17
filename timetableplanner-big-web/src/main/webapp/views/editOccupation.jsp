@@ -22,7 +22,7 @@
 	 <div class="text-left">
 		<div class="row-fluid"><div class="col-md-12"><hr></div></div>
 	 	<div class="row-fluid"><div class="col-md-12"><hr></div></div> 
-	 	<form:form method="POST" id="form" commandName="form" action="${pageContext.request.contextPath}/editUserOccupation/${occupation.id}">
+	 	<form:form method="POST" id="form" commandName="form" action="${pageContext.request.contextPath}/editOccupation/${occupation.id}">
 	 	<p class="text-warning col-sm-4 col-sm-offset-4" id="message">${errorMessage}</p>
 	 	
 		 	<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3 col-lg-4 col-lg-offset-4">

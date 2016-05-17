@@ -29,7 +29,7 @@ public class OccupationGroupController {
         ModelAndView model = new ModelAndView("admin/occupationGroupsList");
 
         Pagination<OccupationGroupDto> page = occupationGroupService.findAllOccupationGroupPageable(pageNumber);
-        page.setPageName("/admin/occupationGroups");
+        page.setPageName("admin/occupationGroups");
         model.addObject("page", page);
 
         return model;

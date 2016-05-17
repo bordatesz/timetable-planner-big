@@ -6,9 +6,8 @@
 
 package hu.thesis.timetableplanner.model;
 
-import java.util.List;
-
 import javax.persistence.*;
+import java.util.List;
 
 /**
  *
@@ -21,7 +20,7 @@ public class User extends BaseEntity {
 	private String userName;
 
 	@Column(unique = true)
-	private String emailAdress;
+	private String emailAddress;
 
 	private String password;
 
@@ -73,12 +72,12 @@ public class User extends BaseEntity {
 		this.userName = userName;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getPassword() {

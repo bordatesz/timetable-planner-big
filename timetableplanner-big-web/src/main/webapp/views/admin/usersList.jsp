@@ -39,22 +39,20 @@
                         <tr>
                             <td>${(page.pageSize * (page.currentIndex-1)) + status.count}</td>
                             <td>${user.userName}</td>
-                            <td>${user.emailAdress}</td>
+                            <td>${user.emailAddress}</td>
                             <td>${user.lecturer}</td>
-
-                            <c:set var="authority" value=""></c:set>
-                            <c:forEach items="${user.authorities}" var="role">
-                            	<c:if test="${role.authority  == 'ROLE_ADMIN'}">
-                            		<c:set var="authority" value="${authority} Admin"></c:set>
-                            	</c:if>
-                            	<c:if test="${role.authority  == 'ROLE_LECTURER'}">
-                                    <c:set var="authority" value="${authority} Lecturer"></c:set>
-                                </c:if>
-                            </c:forEach>
                             <c:if test="${empty user.authorities}">
-                            	<c:set var="authority" value=""></c:set>
+                            	<c:set var="role" value=""></c:set>
                             </c:if>
-                            <td>${authority}</td>
+                            <c:if test="${not empty user.authorities}">
+                                <td>
+                                    <ul>
+                                        <c:forEach items="${user.authorities}" var="role">
+                                            <li>${role.authority}</li>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                            </c:if>
                             <td class="table-buttons">
                               <a class="btn btn-info" href="${pageContext.request.contextPath}/admin/editUser/${user.id}">Edit</a>
                               <a id="deleteBtn" class="btn btn-danger" href="${pageContext.request.contextPath}/admin/deleteUser/${user.id}">Delete</a>

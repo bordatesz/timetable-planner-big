@@ -15,10 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -79,7 +78,7 @@ public class OccupationServiceImpl implements OccupationService{
         Occupation newOccupation = new Occupation();
         newOccupation.setName(form.getName());
         newOccupation.setDateTime(form.getDateTime());
-        User currentUser = userRepository.findByEmailAdress(actualUserEmail);
+        User currentUser = userRepository.findByEmailAddress(actualUserEmail);
         currentUser.getOccupations().add(newOccupation);
 
         return occupationRepository.save(newOccupation).getId();
@@ -98,15 +97,16 @@ public class OccupationServiceImpl implements OccupationService{
     @Override
     public void deleteOccupation(long id) {
         Occupation occupation = occupationRepository.findOne(id);
-        //occupation.getUsers().clear();
+        //occupation.getUsers().clear(); Ez akkor, ha a kapcsolatokat is akarom törölni?
         //occupationRepository.save(occupation);
         occupationRepository.delete(occupation);
     }
 
-    @Transactional
+    //Ez akkor ha csak a usertől akarom törölni
+    /*@Transactional
     @Override
     public void deleteUserOccupation(String actualUserEmail, long occupationId) {
-        User user = userRepository.findByEmailAdress(actualUserEmail);
+        User user = userRepository.findByEmailAddress(actualUserEmail);
         List<Occupation> occupations = user.getOccupations();
         for (Iterator<Occupation> iterator = occupations.iterator(); iterator.hasNext();) {
             Occupation occupation = iterator.next();
@@ -116,7 +116,7 @@ public class OccupationServiceImpl implements OccupationService{
         }
         user.setOccupations(occupations);
         userRepository.save(user);
-    }
+    }*/
 
 
 }

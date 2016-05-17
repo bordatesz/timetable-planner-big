@@ -1,19 +1,24 @@
-package hu.thesis.timetableplanner.dto;
+package hu.thesis.timetableplanner.form;
 
 import hu.thesis.timetableplanner.model.Teach;
 import hu.thesis.timetableplanner.model.User;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Atesz on 2015.01.08..
- */
-public class CourseDto extends BaseDto {
+public class CourseForm {
 
+    @NotNull
+    @Size(min=1,max=255)
     private String name;
 
+    @NotNull
+    @Size(min=1,max=255)
     private String type;
 
+    @NotNull
     private Integer credit;
 
     private Integer hoursPerWeek;
@@ -22,9 +27,9 @@ public class CourseDto extends BaseDto {
 
     private Integer curricula;
 
-    private UserDto responsible;
+    private String responsible;
 
-    private List<Teach> taughtBy;
+    //private List<Teach> taughtBy;
 
     public String getName() {
         return name;
@@ -74,19 +79,19 @@ public class CourseDto extends BaseDto {
         this.curricula = curricula;
     }
 
-    public UserDto getResponsible() {
+    public String getResponsible() {
         return responsible;
     }
 
-    public void setResponsible(UserDto responsible) {
+    public void setResponsible(String responsible) {
         this.responsible = responsible;
     }
 
-    public List<Teach> getTaughtBy() {
+    /*public List<Teach> getTaughtBy() {
         return taughtBy;
-    }
+    }*/
 
-    public void setTaughtBy(List<Teach> taughtBy) {
+    /*public void setTaughtBy(List<Teach> taughtBy) {
         this.taughtBy = taughtBy;
-    }
+    } */
 }

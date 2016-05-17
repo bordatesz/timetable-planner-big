@@ -1,35 +1,38 @@
 package hu.thesis.timetableplanner.service;
 
+import hu.thesis.timetableplanner.dto.AuthorityDto;
 import hu.thesis.timetableplanner.dto.UserDto;
 import hu.thesis.timetableplanner.form.CreateUserForm;
 import hu.thesis.timetableplanner.form.EditUserForm;
 import hu.thesis.timetableplanner.pagination.Pagination;
 
+import java.util.List;
+
 public interface UserService {
 	
 	/**
 	 * Create a new User, with the given password.
-	 * @param user 
+	 * @param form
 	 * @return The id of the created User.
 	 */
 	long createUser(CreateUserForm form);
 	
 	/**
 	 * Find a user by its email address which has to be identical.
-	 * @param email
+	 * @param emailAddress
 	 * @return UserDto
 	 */
-	UserDto findByEmailAdress(String emailAdress);
+	UserDto findByEmailAddress(String emailAddress);
 	
 	/**
 	 * Check the user if already exist.
-	 * @param email
+	 * @param emailAddress
 	 * @return boolean
 	 */
-	boolean checkUser(String emailAdress);
+	boolean checkUser(String emailAddress);
 	
 	/**
-	 * Returns all the created user having author authority
+	 * Returns all the created user
 	 * in a page.
 	 * @param pageNumber
 	 * @return @{link Pagination<UserDto>}
@@ -38,13 +41,20 @@ public interface UserService {
 	Pagination<UserDto> findAllUserPageable(int pageNumber);
 
 	/**
+	 * Returns all the created user
+	 * @return @{link Pagination<UserDto>}
+	 */
+
+	List<UserDto> findAllUser();
+
+	/**
 	 * Returns all the created user having author authority
 	 * in a page.
 	 * @param pageNumber
 	 * @return @{link Pagination<UserDto>}
 	 */
 
-	Pagination<UserDto> findAllLecturerPageable(int pageNumber);
+	//Pagination<UserDto> findAllLecturerPageable(int pageNumber);
 	
 
 	/**
@@ -62,7 +72,7 @@ public interface UserService {
 	 * @param id is the identifier of the user being edited
 	 * @param form is the Edit form.
 	 */
-	public void editUser(long id, EditUserForm form, String password);
+	void editUser(long id, EditUserForm form, String password);
 	
 	/**
 	 * Update the modification mad on the given user 
@@ -70,16 +80,25 @@ public interface UserService {
 	 * @param id is the identifier of the user being edited
 	 * @param form is the Edit form.
 	 */
-	public void editUser(long id, EditUserForm form);
+	void editUser(long id, EditUserForm form);
 	
 	/**
-	 * It checks wheather the use has a role provided as parameter and
+	 * It checks wheather the user has a role provided as parameter and
 	 * return true if it has or false otherwise.
 	 * @param id is the identifier of the user
 	 * @param role is the role that being checked 
 	 * @return {@link boolean}
 	 */
 	boolean hasRole(long id, String role);
+
+	/**
+	 * It checks wheather the user find by email address has a role provided as parameter and
+	 * return true if it has or false otherwise.
+	 * @param emailAddress is the identifier of the user
+	 * @param role is the role that being checked
+	 * @return {@link boolean}
+	 */
+	boolean hasRoleByEmailAddress(String emailAddress, String role);
 	
 	/**
 	 * It virtualy deletes the user, after this the 
@@ -87,6 +106,8 @@ public interface UserService {
 	 * non of the users post will removed or setted to invisible.   
 	 * @param id 
 	 */
-	public void deleteUser(long id);
+	void deleteUser(long id);
+
+	List<UserDto> findByAuthorityName(String authorityName);
 
 }

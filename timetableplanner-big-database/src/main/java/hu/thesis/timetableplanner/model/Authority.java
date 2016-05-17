@@ -1,10 +1,9 @@
 package hu.thesis.timetableplanner.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "authority")

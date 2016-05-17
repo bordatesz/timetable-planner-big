@@ -3,7 +3,6 @@ package hu.thesis.timetableplanner.controller;
 import hu.thesis.timetableplanner.dto.OccupationDto;
 import hu.thesis.timetableplanner.dto.UserDto;
 import hu.thesis.timetableplanner.form.OccupationForm;
-import hu.thesis.timetableplanner.model.Occupation;
 import hu.thesis.timetableplanner.pagination.Pagination;
 import hu.thesis.timetableplanner.service.OccupationService;
 import hu.thesis.timetableplanner.service.UserService;
@@ -39,11 +38,11 @@ public class OccupationController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
-    @RequestMapping(value = "/userOccupations", method = RequestMethod.GET) //TODO pageable?
+    @RequestMapping(value = "/occupations", method = RequestMethod.GET) //TODO pageable?
     public ModelAndView listUserOccupations(Principal principal, HttpServletRequest request) {
-        ModelAndView model = new ModelAndView("userOccupationList");
+        ModelAndView model = new ModelAndView("occupationList");
 
-        UserDto actualUser =  userService.findByEmailAdress(principal.getName());
+        UserDto actualUser =  userService.findByEmailAddress(principal.getName());
         List<OccupationDto> userOccupations = actualUser.getOccupations();
 
         model.addObject("userOccupations", userOccupations);
@@ -51,22 +50,26 @@ public class OccupationController {
         return model;
     }
 
-    @RequestMapping(value = "/admin/occupations/{pageNumber}", method = RequestMethod.GET) //TODO pageable?
-    public ModelAndView listOccupations(@PathVariable("pageNumber") int pageNumber, HttpServletRequest request) {
+    @RequestMapping(value = "/admin/occupations", method = RequestMethod.GET) //TODO pageable?
+    public ModelAndView listOccupations(HttpServletRequest request, Principal principal) {
+
+        if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+            return new ModelAndView("redirect:/permissionViolation");
+        }
+
         ModelAndView model = new ModelAndView("admin/occupationList");
 
-        Pagination<OccupationDto> page = occupationService.findAllOccupationPageable(pageNumber);
-        page.setPageName("/admin/occupations");
-        model.addObject("page", page);
+        List<UserDto> users = userService.findAllUser();
+        model.addObject("users", users);
 
         return model;
     }
 
-    @RequestMapping(value = "/addUserOccupation", method = RequestMethod.GET)
+    @RequestMapping(value = "/addOccupation", method = RequestMethod.GET)
     public ModelAndView createUserOccupationGet(HttpServletRequest request,
                                       @ModelAttribute String errorMessage) {
 
-        ModelAndView model = new ModelAndView("createUserOccupation");
+        ModelAndView model = new ModelAndView("createOccupation");
         OccupationForm form = new OccupationForm();
         model.addObject("form", form);
         request.setAttribute("errorMessage", errorMessage);
@@ -74,23 +77,27 @@ public class OccupationController {
         return model;
     }
 
-    @RequestMapping(value = "/addUserOccupation", method = RequestMethod.POST)
+    @RequestMapping(value = "/addOccupation", method = RequestMethod.POST)
     public String createUserOccupationPost(Principal principal, HttpServletRequest request,
                                            @Valid @ModelAttribute("form") OccupationForm form,
                                  BindingResult result, RedirectAttributes redirectAttributes) {
         if (!result.hasErrors()) {
             occupationService.createUserOccupation(principal.getName(), form);
-            return "redirect:/userOccupations";
+            return "redirect:/occupations";
         }
         redirectAttributes.addFlashAttribute("errorMessage",
                 "There is some error" + result.toString());
-        return "redirect:/addUserOccupation";
+        return "redirect:/addOccupation";
 
     }
 
     @RequestMapping(value = "/admin/addOccupation", method = RequestMethod.GET)
-    public ModelAndView createOccupationGet(HttpServletRequest request,
+    public ModelAndView createOccupationGet(HttpServletRequest request, Principal principal,
                                                 @ModelAttribute String errorMessage) {
+
+        if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+            return new ModelAndView("redirect:/permissionViolation");
+        }
 
         ModelAndView model = new ModelAndView("admin/createOccupation");
         OccupationForm form = new OccupationForm();
@@ -114,21 +121,25 @@ public class OccupationController {
 
     }
 
-    @RequestMapping(value = "/editUserOccupation/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/editOccupation/{id}", method = RequestMethod.GET)
     public ModelAndView editUserOccupationGet(@PathVariable("id") long id,
-                                          HttpServletRequest request, @ModelAttribute String errorMessage) {
+                        HttpServletRequest request, @ModelAttribute String errorMessage, Principal principal) {
 
+        UserDto actualUser =  userService.findByEmailAddress(principal.getName());
+        if(!hasActionPermission(actualUser, id)) {
+            return new ModelAndView("redirect:/permissionViolation");
+        }
+
+        OccupationDto occupation = occupationService.findById(id);
         ModelAndView model = new ModelAndView("editOccupation");
         OccupationForm form = new OccupationForm();
-        OccupationDto occupation = occupationService.findById(id); //USert le kell kérni, és ellenőrzni hogy hozzá tartozik e
-
         model.addObject("occupation", occupation);
         model.addObject("form", form);
         request.setAttribute("errorMessage", errorMessage);
         return model;
     }
 
-    @RequestMapping(value = "/editUserOccupation/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/editOccupation/{id}", method = RequestMethod.POST)
     public String editUserOccupationPost(@PathVariable("id") long id,
                                          @Valid @ModelAttribute("form") OccupationForm form,
                                      BindingResult result, RedirectAttributes redirectAttribute,
@@ -136,17 +147,19 @@ public class OccupationController {
 
         if (!result.hasErrors()) {
             occupationService.editOccupation(id, form);
-            return "redirect:/userOccupations";
+            return "redirect:/occupations";
         }
         redirectAttribute.addFlashAttribute("errorMessage", "An error  occured: " + result.toString());
-        return "redirect:/editUserOccupation/" + id;
+        return "redirect:/editOccupation/" + id;
     }
 
-    //TODO Ez felesleges, mert ha egy metódussal (GET/POST) ROLE-t ellenőrizve szerveroldalon ellenőrzöm, akkor elég egy
-    //TODO: Here is the method you should use for checking the user role: "public boolean hasRole(long id, String role)"
     @RequestMapping(value = "/admin/editOccupation/{id}", method = RequestMethod.GET)
-    public ModelAndView editOccupationGet(@PathVariable("id") long id,
+    public ModelAndView editOccupationGet(@PathVariable("id") long id, Principal principal,
                                  HttpServletRequest request, @ModelAttribute String errorMessage) {
+
+        if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+            return new ModelAndView("redirect:/permissionViolation");
+        }
 
         ModelAndView model = new ModelAndView("admin/editOccupation");
         OccupationForm form = new OccupationForm();
@@ -166,28 +179,48 @@ public class OccupationController {
 
         if (!result.hasErrors()) {
             occupationService.editOccupation(id, form);
-            return "redirect:/admin/occupations/1";
+            return "redirect:/admin/occupations";
         }
         redirectAttribute.addFlashAttribute("errorMessage", "An error  occured: " + result.toString());
         return "redirect:/admin/editOccupation/" + id;
     }
 
-    @RequestMapping(value = "/removeUserOccupation/{id}", method = RequestMethod.GET)  //alias remove
+    //TODO: Do this if occupation is selectable for users
+    /*@RequestMapping(value = "/removeUserOccupation/{id}", method = RequestMethod.GET)
     public String removeUserOccupation(Principal principal, @PathVariable("id") long id) {
         occupationService.deleteUserOccupation(principal.getName(), id);
         return "redirect:/userOccupations";
-    }
+    }*/
 
-    @RequestMapping(value = "/deleteUserOccupation/{id}", method = RequestMethod.GET)  //alias remove
+    @RequestMapping(value = "/deleteOccupation/{id}", method = RequestMethod.GET)
     public String deleteUserOccupation(Principal principal, @PathVariable("id") long id) {
+        UserDto actualUser =  userService.findByEmailAddress(principal.getName());
+        if(!hasActionPermission(actualUser, id)) {
+            return "redirect:/permissionViolation";
+        }
+
         occupationService.deleteOccupation(id);
-        return "redirect:/userOccupations";
+        return "redirect:/occupations";
     }
 
     @RequestMapping(value = "/admin/deleteOccupation/{id}", method = RequestMethod.GET)
-    public String deleteOccupation(@PathVariable("id") long id) {
+    public String deleteOccupation(@PathVariable("id") long id, Principal principal) {
+        if(!userService.hasRoleByEmailAddress(principal.getName(), "ROLE_SYS_ADMIN")) {
+            return "redirect:/permissionViolation";
+        }
         occupationService.deleteOccupation(id);
-        return "redirect:/occupations/1";
+        return "redirect:/admin/occupations";
+    }
+
+    //TODO: Maybe move out to a dedicateed class, maybe refactor/rename
+    private boolean hasActionPermission(UserDto actualUser, long occupationId){
+        List<OccupationDto> userOccupations = actualUser.getOccupations();
+        for(OccupationDto occupation : userOccupations){
+            if(occupation.getId() == occupationId){
+                return true;
+            }
+        }
+        return false;
     }
 
 

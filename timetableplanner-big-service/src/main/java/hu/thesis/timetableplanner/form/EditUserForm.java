@@ -3,6 +3,7 @@ package hu.thesis.timetableplanner.form;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class EditUserForm {
 	
@@ -12,7 +13,7 @@ public class EditUserForm {
 	private String userName;
 
 	@NotNull @Size(min=1,max=128)
-	private String emailAdress;
+	private String emailAddress;
 	
 	@Size(min=8)
 	@Pattern(regexp=REGEXP_PASSWORD)
@@ -22,9 +23,7 @@ public class EditUserForm {
 	@Pattern(regexp=REGEXP_PASSWORD)
 	private String retypePassword;
 
-	private boolean admin;
-
-	private boolean lecturer;
+	private List<String> userRoles;
 
 	public String getUserName() {
 		return userName;
@@ -34,12 +33,12 @@ public class EditUserForm {
 		this.userName = userName;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getNewPassword() {
@@ -58,24 +57,15 @@ public class EditUserForm {
 		this.retypePassword = retypePassword;
 	}
 
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
-
 	public static String getRegexpPassword() {
 		return REGEXP_PASSWORD;
 	}
 
-
-	public boolean isLecturer() {
-		return lecturer;
+	public List<String> getUserRoles() {
+		return userRoles;
 	}
 
-	public void setLecturer(boolean lecturer) {
-		this.lecturer = lecturer;
+	public void setUserRoles(List<String> userRoles) {
+		this.userRoles = userRoles;
 	}
 }

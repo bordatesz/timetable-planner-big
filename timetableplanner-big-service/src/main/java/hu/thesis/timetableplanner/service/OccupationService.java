@@ -20,5 +20,5 @@ public interface OccupationService {
 
     public void deleteOccupation(long id);
 
-    public void deleteUserOccupation(String actualUserEmail, long occupationId);
+    /*public void deleteUserOccupation(String actualUserEmail, long occupationId);*/
 }

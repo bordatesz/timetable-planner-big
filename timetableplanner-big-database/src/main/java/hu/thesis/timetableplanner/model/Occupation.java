@@ -6,10 +6,9 @@
 
 package hu.thesis.timetableplanner.model;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.*;
 
 /**
  *
